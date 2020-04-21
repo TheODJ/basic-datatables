@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>DataTables Sample</title>
+        <link rel="stylesheet" type="text/css" href="bootstrap-4.4.1/css/bootstrap.min.css"></link>
+        <link rel="stylesheet" type="text/css" href="DataTables/datatables.min.css"></link>
+        <link rel="stylesheet" type="text/css" href="DataTables/DataTables-1.10.20/css/dataTables.bootstrap4.min.css"></link>
+        <script type="text/javascript" src="jquery-3.5.0.js"></script>
+        <script type="text/javascript" src="DataTables/DataTables-1.10.20/js/jquery.dataTables.min.js"></script>
+        <script type="text/javascript" src="bootstrap-4.4.1/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="DataTables/datatables.min.js"></script>
+        <script type="text/javascript" src="DataTables/DataTables-1.10.20/js/dataTables.bootstrap4.min.js"></script>
+
+    </head>
+    <body>
+        <div class="container px-3 py-3">
+            <table id="students" class="display table table-bordered table-striped" cellspacing="0" style="width:100%;">
+                <thead>
+                    <tr>
+                        <!--
+                        <th>ID</th>
+                        <th>Team Name</th>
+                        <th>Game Week Points</th>
+                        <th>Current Rank</th>
+                        <th>Total Points</th>
+                        <th>Name</th>
+                        <th>Chips</th>
+                        <th>Current Game Week</th>
+                        -->
+                        <th>Column 1</th>
+                        <th>Column 2</th>
+                        <th>Column 3</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+                <tfoot>
+                    <!--
+                    <th>ID</th>
+                    <th>Team Name</th>
+                    <th>Game Week Points</th>
+                    <th>Current Rank</th>
+                    <th>Total Points</th>
+                    <th>Name</th>
+                    <th>Chips</th>
+                    <th>Current Game Week</th>
+                    -->
+                    <th>Column 1</th>
+                    <th>Column 2</th>
+                    <th>Column 3</th>
+                </tfoot>
+            </table>
+            <script type="text/javascript">
+            /*
+            $(document).ready(function(){
+            //Below is for data from custom json file
+                     $('#students').DataTable({
+                        ajax:
+                            {
+                                url: "data.txt",
+                                dataSrc: ''
+                            },
+                        "columns": [
+                        { "data": "iden" },
+                        { "data": "teamname" },
+                        { "data": "gameweek_points" },
+                        { "data": "current_rank" },
+                        { "data": "total_points" },
+                        { "data": "name_user" },
+                        { "data": "chips" },
+                        { "data": "current_gameweek" }
+                    ]
+                     }
+
+                     )
+            */
+            //Below is for data from external json source
+            $(document).ready(function(){
+                var arrayReturn = [];
+                        $.ajax({
+                            url: "http://jsonplaceholder.typicode.com/posts",
+                            async: false,
+                            dataType: 'json',
+                            success: function (data) {
+                                for (var i = 0, len = data.length; i < len; i++) {
+                                    var desc = data[i].body;
+                                    arrayReturn.push([ data[i].userId, '<a href="http://google.com" target="_blank">'+data[i].title+'</a>', desc.substring(0, 12)]);
+                                }
+                            inittable(arrayReturn);
+                            }
+                        });
+                function inittable(data) {	
+                    //console.log(data);
+                    $('#students').DataTable( {
+                        "aaData": data,
+                        "dataSrc": function ( json ) {
+                            console.log(json);
+                        for ( var i=0, ien=json.data.length ; i<ien ; i++ ) {
+                            json.data[i][0] = '<a href="/message/'+json.data[i][0]+'>View message</a>';
+                        }
+                        return json.data;
+                        }
+                    } );
+                }
+            });
+            </script>
+        </div>
+    </body>
+</html>
